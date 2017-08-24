@@ -3,8 +3,6 @@
        var SongPlayer = {};
 
        var currentAlbum = Fixtures.getAlbum();
-
-
           /**
             * @desc Buzz object audio file
             * @type {Object}
@@ -30,7 +28,13 @@
               $rootScope.$apply(function() {
                   SongPlayer.currentTime = currentBuzzObject.getTime();
               });
-     });
+          });
+
+          currentBuzzObject.bind("volumechange", function (){
+            $rootScope.$apply(function() {
+                SongPlayer.volume = currentBuzzObject.getVolume();
+            });
+          });
 
             SongPlayer.currentSong = song;
          };
@@ -71,12 +75,18 @@
            * @desc Active song object from list of songs
            * @type {Object}
            */
-         SongPlayer.currentSong = null;
-         /**
+           SongPlayer.currentSong = null;
+          /**
             * @desc Current playback time (in seconds) of currently playing song
             * @type {Number}
             */
             SongPlayer.currentTime = null;
+
+            /**
+              * @desc Current volume
+              * @type {Number}
+              */
+            SongPlayer.volume = 30;
 
          /**
           * @function play
@@ -153,6 +163,16 @@
               currentBuzzObject.setTime(time);
           }
       };
+      /**
+       * @function setVolume
+       * @desc sets the volume
+       * @param {Number} vol
+       */
+       SongPlayer.setVolume = function(volume) {    
+           if (currentBuzzObject) {
+               currentBuzzObject.setVolume(volume);
+           }
+       };
           return SongPlayer;
      }
 
