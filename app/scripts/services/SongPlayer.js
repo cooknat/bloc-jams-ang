@@ -26,7 +26,8 @@
 
             currentBuzzObject.bind('timeupdate', function() {
               $rootScope.$apply(function() {
-                  SongPlayer.currentTime = currentBuzzObject.getTime();
+                  //SongPlayer.currentTime = currentBuzzObject.getTime();
+                  SongPlayer.currentTime = buzz.toTimer(currentBuzzObject.getTime());
               });
           });
 
@@ -161,14 +162,26 @@
       SongPlayer.setCurrentTime = function(time) {
           if (currentBuzzObject) {
               currentBuzzObject.setTime(time);
+
           }
       };
+
+      /**
+       * @function timeInMins
+       * @desc convert time in seconds to time in minutes
+       * @param {Number} time
+       * @returns {Number} time.toTimer
+       */
+      SongPlayer.timeInMins = function(time){
+        return currentBuzzObject.toTimer(time);
+      }
+
       /**
        * @function setVolume
        * @desc sets the volume
        * @param {Number} vol
        */
-       SongPlayer.setVolume = function(volume) {    
+       SongPlayer.setVolume = function(volume) {
            if (currentBuzzObject) {
                currentBuzzObject.setVolume(volume);
            }
