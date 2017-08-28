@@ -10,6 +10,12 @@
           var currentBuzzObject = null;
 
           /**
+            * @desc holds the volume level so that unmuting returns to the previous volume
+            * @type {Number}
+            */
+          var userVolume = null;
+
+          /**
            * @function setSong
            * @desc Stops currently playing song and loads new audio file as currentBuzzObject
            * @param {Object} song
@@ -26,7 +32,7 @@
 
             currentBuzzObject.bind('timeupdate', function() {
               $rootScope.$apply(function() {
-                  SongPlayer.currentTime = currentBuzzObject.getTime();                
+                  SongPlayer.currentTime = currentBuzzObject.getTime();
               });
           });
 
@@ -85,8 +91,10 @@
             /**
               * @desc Current volume
               * @type {Number}
+              * set to 80 as this is the Buzz default
               */
-            SongPlayer.volume = 30;
+            SongPlayer.volume = 80;
+            userVolume = SongPlayer.volume;
 
          /**
           * @function play
@@ -154,6 +162,23 @@
      };
 
      /**
+      * @function mute
+      * @desc mutes or unmutes volume
+      */
+      SongPlayer.mute = function() {
+
+        //1. as a user i want to unmute the song and have it play at the previous volume
+          if(currentBuzzObject.getVolume() > 0){
+            SongPlayer.volume = 0;
+            currentBuzzObject.setVolume(0);
+          }else{
+            SongPlayer.volume = userVolume;
+            currentBuzzObject.setVolume(userVolume);
+          }
+
+      };
+
+     /**
       * @function setCurrentTime
       * @desc Set current time (in seconds) of currently playing song
       * @param {Number} time
@@ -183,8 +208,25 @@
        SongPlayer.setVolume = function(volume) {
            if (currentBuzzObject) {
                currentBuzzObject.setVolume(volume);
+               userVolume = volume;
            }
        };
+
+       /**
+        * @function getIcon
+        * @desc returns correct speaker icon depending on whether player is muted
+        * @story  as a user i want to see that a song is muted by a change to the speaker icon
+        */       
+        SongPlayer.getIcon = function() {
+          if(currentBuzzObject){
+            if (currentBuzzObject.getVolume() === 0) {
+                return "icon ion-volume-mute";
+            }
+            else{
+              return "icon ion-volume-high"
+          }
+         }
+        };
           return SongPlayer;
      }
 
