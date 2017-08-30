@@ -33,6 +33,13 @@
             currentBuzzObject.bind('timeupdate', function() {
               $rootScope.$apply(function() {
                   SongPlayer.currentTime = currentBuzzObject.getTime();
+
+                  var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+                  var currentSongLength = currentAlbum.songs[currentSongIndex].duration;
+
+                  if(SongPlayer.currentTime == currentSongLength){
+                    SongPlayer.next();
+                  }
               });
           });
 
@@ -73,9 +80,9 @@
          * @desc stops song playing and sets playing to null
          * @param {Object} song
          */
-         var stopSong = function(song){
+         var stopSong = function(){
               currentBuzzObject.stop();
-              song.playing = null;
+              SongPlayer.currentSong.playing = null;
          }
          /**
            * @desc Active song object from list of songs
@@ -123,7 +130,8 @@
      */
     SongPlayer.pause = function(song) {
       song = song || SongPlayer.currentSong;
-      stopSong(song);
+      currentBuzzObject.pause();
+      song.playing = false;
     };
 
     /**
@@ -166,7 +174,6 @@
       * @desc mutes or unmutes volume
       */
       SongPlayer.mute = function() {
-
         //1. as a user i want to unmute the song and have it play at the previous volume
           if(currentBuzzObject.getVolume() > 0){
             SongPlayer.volume = 0;
@@ -175,7 +182,6 @@
             SongPlayer.volume = userVolume;
             currentBuzzObject.setVolume(userVolume);
           }
-
       };
 
      /**
@@ -216,7 +222,7 @@
         * @function getIcon
         * @desc returns correct speaker icon depending on whether player is muted
         * @story  as a user i want to see that a song is muted by a change to the speaker icon
-        */       
+        */
         SongPlayer.getIcon = function() {
           if(currentBuzzObject){
             if (currentBuzzObject.getVolume() === 0) {
