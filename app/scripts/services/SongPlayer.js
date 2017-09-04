@@ -37,7 +37,7 @@
                   var currentSongIndex = getSongIndex(SongPlayer.currentSong);
                   var currentSongLength = currentAlbum.songs[currentSongIndex].duration;
 
-                  if(SongPlayer.currentTime == currentSongLength){
+                  if(SongPlayer.currentTime == currentBuzzObject.getDuration()){
                     SongPlayer.next();
                   }
               });
