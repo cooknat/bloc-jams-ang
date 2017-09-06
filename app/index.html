@@ -1,5 +1,5 @@
 <!DOCTYPE html>
- <html ng-app="blocJams">
+<html ng-app="blocJams">
 <head lang="en">
     <meta charset="UTF-8">
     <title>Bloc Jams Angular</title>
@@ -24,6 +24,20 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyA9kIi3m_5ho39o_0sg6yb7ibP2j7Pk61Y",
+        authDomain: "bloc-jams-angular-987be.firebaseapp.com",
+        databaseURL: "https://bloc-jams-angular-987be.firebaseio.com",
+        projectId: "bloc-jams-angular-987be",
+        storageBucket: "",
+        messagingSenderId: "470427901913"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.2.0/buzz.min.js"></script>
     <script src="/scripts/app.js"></script>
     <script src="/scripts/controllers/LandingCtrl.js"></script>
