@@ -1,8 +1,9 @@
 (function() {
-      function SongPlayer($rootScope, Fixtures) {
+      function SongPlayer($rootScope, Fixtures, $stateParams) {
        var SongPlayer = {};
 
-       var currentAlbum = Fixtures.getAlbum();
+       var currentAlbum = Fixtures.getAlbum($stateParams.title);
+       console.log("songplayer " + currentAlbum);
           /**
             * @desc Buzz object audio file
             * @type {Object}
@@ -238,5 +239,5 @@
 
      angular
          .module('blocJams')
-         .factory('SongPlayer', ['$rootScope','Fixtures', SongPlayer]);
+         .factory('SongPlayer', ['$rootScope','Fixtures', '$stateParams', SongPlayer]);
  })();
