@@ -1,8 +1,10 @@
 (function() {
     function PlayerBarCtrl(Fixtures, SongPlayer, $stateParams) {
-        this.albumData = Fixtures.getAlbum($stateParams.title);
+        Fixtures.getAlbum($stateParams.title).then((res) => {
+            this.albumData = res;
+        });
         this.songPlayer = SongPlayer;
-        console.log("player control " + this.albumData);
+
     }
 
     angular

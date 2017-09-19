@@ -7,13 +7,12 @@
 
 
 
-    Fixtures.getAlbum = function(albumID) {
-       var result = albumCollection.$loaded().then(function(el){
-          return el.$getRecord(albumID);
-        });
-        console.log(result);
-        return JSON.stringify(result);
-    };
+        Fixtures.getAlbum = function(albumID) {
+             var result = albumCollection.$loaded().then(function(el){                
+                return el.$getRecord(albumID);
+              })
+              return result;
+          };
 
     Fixtures.getCollection = function(numberOfAlbums){
       return albumCollection;

@@ -2,8 +2,12 @@
       function SongPlayer($rootScope, Fixtures, $stateParams) {
        var SongPlayer = {};
 
-       var currentAlbum = Fixtures.getAlbum($stateParams.title);
-       console.log("songplayer " + currentAlbum);
+       var currentAlbum = "";
+
+       Fixtures.getAlbum($stateParams.title).then((res) => {
+           currentAlbum = res;
+       });
+
           /**
             * @desc Buzz object audio file
             * @type {Object}
@@ -35,8 +39,11 @@
               $rootScope.$apply(function() {
                   SongPlayer.currentTime = currentBuzzObject.getTime();
 
-                  var currentSongIndex = getSongIndex(SongPlayer.currentSong);
-                  var currentSongLength = currentAlbum.songs[currentSongIndex].duration;
+                  //var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+                  var currentSongIndex = SongPlayer.currentSong.trackNumber;
+
+
+                  var currentSongLength = SongPlayer.currentSong.duration;
 
                   if(SongPlayer.currentTime == currentBuzzObject.getDuration()){
                     SongPlayer.next();
@@ -72,9 +79,41 @@
           * @returns {Object} song
           */
 
-         var getSongIndex = function(song) {
-            return currentAlbum.songs.indexOf(song);
+      /*   var getSongIndex = function(song) {
+
+             for(item in currentAlbum.songs){
+               console.log(currentAlbum.songs[item].trackNumber);
+               if(song.title === currentAlbum.songs[item].title){
+                 console.log("match");
+                 return currentAlbum.songs[item].trackNumber;
+               }
+               return song.trackNumber;
+               if(song === currentAlbum.songs){
+                 console.log(currentAlbum.songs[item].trackNumber);
+                 return currentAlbum.songs[item].trackNumber;
+               }
+
+             }
+        };*/
+
+        var getNextPrevious = function(song, flag){
+          var index = song.trackNumber;
+
+        //  var size = Object.keys(currentAlbum.songs).length;
+
+          if(flag === "next"){
+            index++;
+          }
+          if(flag === "previous"){
+            index--;
+          }
+          for(item in currentAlbum.songs){
+            if(currentAlbum.songs[item].trackNumber === index){
+              return currentAlbum.songs[item];
+            }
+          }
         };
+
 
         /**
          * @function stopSong
@@ -140,16 +179,19 @@
      * @desc sets current song index to previous track
      */
     SongPlayer.previous = function() {
-      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
-      currentSongIndex--;
+    //  var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+    //  currentSongIndex--;
+     var newSong = getNextPrevious(SongPlayer.currentSong, "previous");
 
-      if (currentSongIndex < 0) {
+      if (newSong === undefined) {
         stopSong(SongPlayer.currentSong);
 
        }else{
-         var song = currentAlbum.songs[currentSongIndex];
-         setSong(song);
-         playSong(song);
+         //var song = currentAlbum.songs[currentSongIndex];
+         //setSong(song);
+        // playSong(song);
+        setSong(newSong);
+        playSong(newSong);
       }
     };
     /**
@@ -157,16 +199,18 @@
      * @desc sets current song index to next track
      */
      SongPlayer.next = function() {
-       var currentSongIndex = getSongIndex(SongPlayer.currentSong);
-       currentSongIndex++;
+       //var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+       //currentSongIndex++;
 
-       if (currentSongIndex >= currentAlbum.songs.length) {
+       var newSong = getNextPrevious(SongPlayer.currentSong, "next");
+
+       if (newSong === undefined) {
 
          stopSong(SongPlayer.currentSong);
         }else{
-          var song = currentAlbum.songs[currentSongIndex];
-          setSong(song);
-          playSong(song);
+          //var song = currentAlbum.songs[currentSongIndex];
+          setSong(newSong);
+          playSong(newSong);
        }
      };
 

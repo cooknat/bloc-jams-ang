@@ -2,12 +2,11 @@
 
   function AlbumCtrl(Fixtures, SongPlayer, $stateParams) {
 
-        this.albumData = JSON.parse(Fixtures.getAlbum($stateParams.title));
+        Fixtures.getAlbum($stateParams.title).then((res) => {
+            this.albumData = res;          
+        });
         this.songPlayer = SongPlayer;
-        console.log("album control " + this.albumData);
-
-
-    }
+      }
 
     angular
         .module('blocJams')
